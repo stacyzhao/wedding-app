@@ -3,7 +3,7 @@ import React from "react";
 const Input = props => {
   return (
     <div className="form-group">
-      <label for={props.firstName} className="form-label">
+      <label htmlFor={props.firstName} className="form-label">
         {props.title}
       </label>
       <input

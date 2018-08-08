@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import Input from "./components/Input.js";
 
 class RsvpMain extends Component {
   constructor(props) {
@@ -8,24 +9,24 @@ class RsvpMain extends Component {
     this.state = {
       firstName: '',
       lastName: '',
-      isTrue: false
-    }
+      toRsvpInfo: false
+    };
 
     this.handleSubmit = (event) => {
       const state = this.state;
       event.preventDefault();
       const guestsRef = firebase.database().ref('guests');
-      guestsRef.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+      guestsRef.on('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
           var childData = childSnapshot.val();
           // console.log(state.firstName,state.lastName, childData.firstName, childData.lastName)
           if (state.firstName.toUpperCase() === childData.firstName && state.lastName.toUpperCase() === childData.lastName) {
-            console.log('in');
+            this.setState({toRsvpInfo: true});
+            console.log(state.firstName);
           };
-          console.log('out');
+
         });
       });
-      // // alert('name: '+ state.firstName + ' age: ' + state.lastName);
     };
 
     this.update = (event) => {
@@ -36,10 +37,10 @@ class RsvpMain extends Component {
   }
 
   render() {
-
-    if (this.state.isTrue === true) {
+    if (this.state.toRsvpInfo === true) {
       return <Redirect to='/rsvpinfo' />
     }
+
     return (
       <div className="hero-text">
         <h2>RSVP</h2>
@@ -47,10 +48,24 @@ class RsvpMain extends Component {
         <h5>Enter your info below:</h5>
         <div>
           <form onSubmit={this.handleSubmit}>
-            <input type="text" name="firstName" placeholder="First Name" onChange={this.update} value={this.state.firstName} required/>
-            <br />
-            <input type="text" name="lastName" placeholder="Last Name" onChange={this.update} value={this.state.lastName} required/>
-            <br />
+            <Input
+              inputtype={"text"}
+              title={"First Name"}
+              name={"firstName"}
+              value={this.state.firstName}
+              placeholder={"Enter your first name"}
+              onChange={this.update}
+              required
+              />{" "}
+              <Input
+                inputtype={"text"}
+                title={"Last Name"}
+                name={"lastName"}
+                value={this.state.lastName}
+                placeholder={"Enter your last name"}
+                onChange={this.update}
+                required
+                />{" "}
             <input type="submit" value="Next" onSubmit={this.handleSubmit} />
           </form>
         </div>
