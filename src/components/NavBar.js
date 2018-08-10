@@ -17,6 +17,9 @@ const NavBar = () => (
         <NavItem eventKey={4} href='/rsvpmain'>
           RSVP
         </NavItem>
+        <NavItem eventKey={4} href='/registry'>
+          Registry
+        </NavItem>
       </Nav>
     </div>
   </Navbar>
