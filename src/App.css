@@ -1,28 +1,86 @@
-.App {
+body, html {
+  height: 100%;
+  background-color: #EEE2DC;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-family: 'Lora', serif;
+}
+.h-spacing {
+  padding: 20px 0 30px 0;;
+}
+.hero-image {
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-text {
+  padding-top: 30px;
   text-align: center;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: black;
+  width: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+select, input {
+  color: black;
+	text-align: right;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.error {
+  color:red;
+}
+.small-container {
+  width: 70%;
+  margin: 0 auto;
 }
 
-.App-title {
-  font-size: 1.5em;
+.div-container {
+  margin-bottom: 20px;
+}
+.border {
+  border: 2px;
+}
+.div-form {
+  padding: 10px;
 }
 
-.App-intro {
-  font-size: large;
+.form-control{
+  border:1px solid black;
+  width: 30%;
+  margin: 0 auto;
+  padding: 5px 10px;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.form-group {
+  letter-spacing: 0.1em;
+  font-family: 'Lora', serif;
+  font-weight: 100;
+}
+
+.btn-primary {
+  color: black;
+  background-color: #ffffff;
+  border-color: black;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: black;
+  letter-spacing: 0.2em;
+}
+
+.bg-light {
+  background-color: #EEE2DC!important;
+}
+
+img {
+  width: 50%;
+  float: left;
+  height: auto;
 }
