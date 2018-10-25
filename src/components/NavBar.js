@@ -1,28 +1,32 @@
 import React from 'react';
-import {Navbar, Nav, NavItem} from 'react-bootstrap';
 
 const NavBar = () => (
-  <Navbar>
-    <div className="hero-text">
-      <Nav pullRight>
-        <NavItem eventKey={1} href='/' className='active'>
-          Home
-        </NavItem>
-        <NavItem eventKey={2} href='/venue'>
-          Venue
-        </NavItem>
-        <NavItem eventKey={3} href='/menu'>
-          Menu
-        </NavItem>
-        <NavItem eventKey={4} href='/rsvpmain'>
-          RSVP
-        </NavItem>
-        <NavItem eventKey={4} href='/registry'>
-          Registry
-        </NavItem>
-      </Nav>
+  <nav className="navbar navbar-expand-lg navbar-light bg-light text-center">
+    <div className="mx-auto d-sm-flex d-block flex-sm-nowrap">
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="navbarNav">
+        <ul className="navbar-nav">
+          <li className="nav-item active">
+            <a className="nav-link" href="/">HOME<span className="sr-only">(current)</span></a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/venue">LOCATION</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/menu">MENU</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/rsvpmain">RSVP</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/registry">REGISTRY</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </Navbar>
+  </nav>
 )
 
 export default NavBar;
