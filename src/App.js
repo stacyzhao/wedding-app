@@ -5,7 +5,6 @@ import RsvpInfo from "./rsvpinfo";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import PeterPanBistro from './images/peterpan.jpg';
 
-
 class App extends Component {
   render() {
     return (
@@ -41,8 +40,9 @@ const Venue = () => (
       <img src={PeterPanBistro} alt="Peter Pan Bistro"/>
     </div>
     <h2 className="h-spacing">Location</h2>
-    <h4>Peter Pan Bistro at 6PM</h4>
-    <h6>Dinner Starts at 7PM</h6>
+    <h4>Peter Pan Bistro</h4>
+    <h5>373 Queen St W, Toronto, Ontario</h5>
+    <h6>Mingling at 6PM Dinner at 7PM</h6>
   </div>
 );
 
