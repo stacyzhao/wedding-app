@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-import { Redirect, Link } from 'react-router-dom';
 import Button from './components/Button.js'
 import Select from './components/Select.js'
 import Input from './components/Input.js'
-import Rsvp from './rsvp.js'
 
-function validate(firstName, lastName, isGoing, entree, starter) {
+const validate = (firstName, lastName, isGoing, entree, starter) => {
   const errors = [];
-
   if (firstName.length === 0) {
     errors.push("First Name can't be empty");
   } else if (lastName.length === 0) {
     errors.push("Last Name can't be empty");
   } else if (isGoing === '') {
     errors.push("You havent decided if youre coming yet");
+  } else if (isGoing === 'Will Attend' && (starter === '' || entree === '')) {
+    errors.push("Pick a starter and entree please");
   }
-
   return errors;
 }
 
@@ -30,7 +28,7 @@ class RsvpInfo extends Component {
       entree: '',
       isGoing: '',
       moreGuests: [],
-      isGoingOptions: ['Accept', 'Regret'],
+      isGoingOptions: ['Will Attend', 'Will Not Attend'],
       starterOptions: ['Caprese Salad','Cured Salmon'],
       entreeOptions: ['Duck Breast', 'Steak Frites', 'Wild Mushroom Gnocchi'],
       toCompletePage: false,
@@ -41,6 +39,7 @@ class RsvpInfo extends Component {
     this.handleSubmit = (event) => {
       event.preventDefault();
       const state = this.state;
+
       const guestsRef = firebase.database().ref('guests');
       const guest = {
         firstName: state.firstName.toUpperCase(),
@@ -49,15 +48,26 @@ class RsvpInfo extends Component {
         starter: state.starter,
         entree: state.entree
       }
-      const { firstName, lastName, isGoing } = this.state;
 
-      const errors = validate(firstName, lastName, isGoing);
+      const errors = validate(guest.firstName, guest.lastName, guest.isGoing);
       if (errors.length > 0) {
         this.setState({ errors });
         return;
       }
-      guestsRef.push(guest);
 
+      guestsRef.on('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          var childData = childSnapshot.val();
+          console.log('out')
+        })
+      })
+
+      const key = guestsRef.push().key;
+      guest[key] = {
+        isGoing: state.isGoing
+      }
+      var result = guestsRef.update(guest);
+      console.log(result)
       this.setState({
         firstName: '',
         lastName: '',
@@ -77,27 +87,27 @@ class RsvpInfo extends Component {
     this.setState({
       isGoing: e.target.value,
       starter: '',
-      entree: ''
+      entree: '',
     });
   }
 
-  isDisabled() {
-    return this.state.isGoing === 'Regret' || this.state.isGoing === '';
+  rsvpDisable() {
+    return this.state.isGoing === 'Will Not Attend' || this.state.isGoing === '';
   }
 
   render() {
-
     const { errors, isGoing, firstName, lastName, isGoingOptions, starterOptions, entreeOptions } = this.state;
     if (this.state.toCompletePage === true) {
-      return <div className='hero-text'><h2>your info has been sent. Thanks</h2><h4><Link to='/rsvpmain' > Click here to add more guests</Link></h4></div>
+      return <div className='hero-text'><h2>your info has been sent</h2>
+        <h3>Thanks</h3>
+        <h4><a href='/rsvpmain'>Add More Guest</a></h4></div>
     }
     return (
       <div className='hero-text'>
         <h2>RSVP</h2>
-        <h4>We hope you can join us!</h4>
-        <h5>Enter your info below:</h5>
-        <div>
-          <p></p>
+        <h5>We hope you can join us!</h5>
+        <p>Please complete this form for each seat</p>
+        <div className="div-container">
           <form onSubmit={this.handleSubmit}>
             {errors.map(error => (
               <p className='error' key={error}>Error: {error}</p>
@@ -124,13 +134,13 @@ class RsvpInfo extends Component {
               <Select
                 title={'Will you be able to attend the wedding on Sunday, Sept 23, 2018?'}
                 name={'isGoing'}
-                options={this.state.isGoingOptions}
+                options={isGoingOptions}
                 value={isGoing}
                 placeholder={''}
                 handleChange={this.update}
                 required
               />
-              <fieldset disabled={this.isDisabled()}>
+              <fieldset disabled={this.rsvpDisable()}>
                 <Select
                   title={'Starter'}
                   name={'starter'}
@@ -138,7 +148,6 @@ class RsvpInfo extends Component {
                   value={this.state.starter}
                   placeholder={'Select Starter'}
                   handleChange={this.update}
-                  disabled={this.isDisabled()}
                 />
                 <Select
                   title={'Entree'}
@@ -147,15 +156,13 @@ class RsvpInfo extends Component {
                   value={this.state.entree}
                   placeholder={'Select Entree'}
                   handleChange={this.update}
-                  disabled={this.isDisabled()}
                 />
               </fieldset>
             </div>
             <Button
               action={this.handleSubmit}
               type={'primary'}
-              title={'Submit'}
-              disabled={!this.state.firstName}
+              title={'SUBMIT'}
             />
           </form>
         </div>
